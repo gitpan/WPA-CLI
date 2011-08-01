@@ -5,15 +5,15 @@ use strict;
 
 =head1 NAME
 
-WPA::CLI - The great new WPA::CLI!
+WPA::CLI - Provides a interface to wpa_cli.
 
 =head1 VERSION
 
-Version 0.1.0
+Version 0.1.1
 
 =cut
 
-our $VERSION = '0.1.0';
+our $VERSION = '0.1.1';
 
 
 =head1 SYNOPSIS
@@ -70,17 +70,17 @@ sub status{
 	if (!$? == 0){
 		warn("wpa_cli failed with '".$status."'");
 		return undef;
-	};
+	}
 	
 	my %statusH=status_breakdown($status);
 	if (!defined($status)){
 		return undef;
-	};
+	}
 	
 	$self->{status}={%statusH};
 	
 	return %statusH;
-};
+}
 
 =head2 save_config
 
@@ -95,7 +95,7 @@ sub save_config{
 	my ($self)= @_;
 
 	return $self->run_TF_command('save_config');
-};
+}
 
 =head2 reassociate
 
@@ -110,7 +110,7 @@ sub reassociate{
 	my ($self)= @_;
 
 	return $self->run_TF_command('reassociate');
-};
+}
 
 =head2 set_network
 
@@ -130,10 +130,10 @@ sub set_network{
 	if ($nid =~ /[0123456789]*/){
 		warn('non-numeric network ID used');
 		return undef;
-	};
+	}
 
 	return $self->run_TF_command('set_network '.$nid.' '.$variable.' '.$value, 0);
-};
+}
 
 =head2 get_network
 
@@ -153,19 +153,19 @@ sub get_network{
 	if ($nid =~ /[0123456789]*/){
 		warn('non-numeric network ID used');
 		return undef;
-	};
+	}
 
 	my $returned=$self->run_command('get_network '.$nid.' '.$variable);
 
 	#this means there was a error running wpa_cli
 	if(!defined($returned)){
 		return undef;
-	};
+	}
 
 	#this means it failed
 	if ($returned =~ /.*\nFAIL\n/){
 		return undef;
-	};
+	}
 	
 	#remove the first line.
 	$returned=~s/.*\n//;
@@ -175,7 +175,7 @@ sub get_network{
 	$returned=~s/^#//;
 	
 	return $returned;
-};
+}
 
 =head2 pin
 
@@ -195,10 +195,10 @@ sub pin{
 	if ($nid =~ /[0123456789]*/){
 		warn('non-numeric network ID used');
 		return undef;
-	};
+	}
 
 	return $self->run_TF_command('pin '.$nid.' '.$value, 0);
-};
+}
 
 =head2 new_password
 
@@ -218,10 +218,10 @@ sub new_password{
 	if ($nid =~ /[0123456789]*/){
 		warn('non-numeric network ID used');
 		return undef;
-	};
+	}
 
 	return $self->run_TF_command('new_password '.$nid.' '.$value, 0);
-};
+}
 
 =head2 add_network
 
@@ -243,12 +243,12 @@ sub add_network{
 	#this means there was a error running wpa_cli
 	if(!defined($returned)){
 		return undef;
-	};
+	}
 
 	#this means it failed
 	if ($returned =~ /.*\nFAIL\n/){
 		return undef;
-	};
+	}
 	
 	#remove the first line.
 	$returned=~s/.*\n//;
@@ -256,7 +256,7 @@ sub add_network{
 	chomp($returned);
 	
 	return $returned;
-};
+}
 
 =head2 remove_network
 
@@ -277,10 +277,10 @@ sub remove_network{
 	if ($nid =~ /[0123456789]*/){
 		warn('non-numeric network ID used');
 		return undef;
-	};
+	}
 
 	return $self->run_TF_command('remove_network '.$nid, 0);
-};
+}
 
 =head2 select_network
 
@@ -301,10 +301,10 @@ sub select_network{
 	if ($nid =~ /[0123456789]*/){
 		warn('non-numeric network ID used');
 		return undef;
-	};
+	}
 
 	return $self->run_TF_command('select_network '.$nid, 0);
-};
+}
 
 =head2 enable_network
 
@@ -325,10 +325,10 @@ sub enable_network{
 	if ($nid =~ /[0123456789]*/){
 		warn('non-numeric network ID used');
 		return undef;
-	};
+	}
 
 	return $self->run_TF_command('enable_network '.$nid, 0);
-};
+}
 
 =head2 disable_network
 
@@ -349,10 +349,10 @@ sub disable_network{
 	if ($nid =~ /[0123456789]*/){
 		warn('non-numeric network ID used');
 		return undef;
-	};
+	}
 
 	return $self->run_TF_command('disable_network '.$nid, 0);
-};
+}
 
 =head2 reconfigure
 
@@ -370,7 +370,7 @@ sub reconfigure{
 
 
 	return $self->run_TF_command('reconfigure', 0);
-};
+}
 
 =head2 preauthenticate
 
@@ -388,9 +388,9 @@ sub preauthenticate{
 	my ($self, $bssid)= @_;
 
 	return $self->run_TF_command('preauthenticate '.$bssid, 0);
-};
+}
 
-=head2 preauthenticate
+=head2 disconnect
 
 	$return=$obj->disconnect()
 
@@ -406,7 +406,7 @@ sub disconnect{
 	my ($self, $bssid)= @_;
 
 	return $self->run_TF_command('disconnect'. 0);
-};
+}
 
 =head2 list_network
 
@@ -429,19 +429,19 @@ sub list_network{
 	if ($nid =~ /[0123456789]*/){
 		warn('non-numeric network ID used');
 		return undef;
-	};
+	}
 
 	my $returned=$self->run_command('list_network');
 
 	#this means there was a error running wpa_cli
 	if(!defined($returned)){
 		return undef;
-	};
+	}
 
 	#this means it failed
 	if ($returned =~ /.*\nFAIL\n/){
 		return undef;
-	};
+	}
 	
 	my @returnedA=split(/\n/, $returned);
 	
@@ -473,11 +473,11 @@ sub list_network{
 					$hash{$linesplit[$linesplit[0]]}{ssid}.$linesplit[$ssidInt];
 			
 			$ssidInt++;
-		};
-	};
+		}
+	}
 	
 	return %hash;
-};
+}
 
 =head2 mib
 
@@ -500,24 +500,25 @@ sub mib{
 	if ($nid =~ /[0123456789]*/){
 		warn('non-numeric network ID used');
 		return undef;
-	};
+	}
 
 	my $returned=$self->run_command('mib');
 
 	#this means there was a error running wpa_cli
 	if(!defined($returned)){
 		return undef;
-	};
+	}
 
 	#this means it failed
 	if ($returned =~ /.*\nFAIL\n/){
 		return undef;
-	};
+	}
 	
 	my %hash=status_breakdown($returned, 'mib');
 	
 	return %hash;
-};
+}
+
 =head2 run_TF_command
 
 	$returned=$obj->run_TF_command($command, 0)
@@ -541,20 +542,20 @@ sub run_TF_command{
 	if (!$? == 0){
 		warn("wpa_cli failed with '".$status."'"."for '".$command."'");
 		return undef;
-	};
+	}
 
 	#return 0 upon failure
 	if ($status =~ /.*\nFAIL\n/){
 		return 0;
-	};
+	}
 
 	#return 1 upon success
 	if ($status =~ /.*\nOK\n/){
 		return 1;
-	};
+	}
 
 	return $onend;
-};
+}
 
 =head2 run_command
 
@@ -578,10 +579,16 @@ sub run_command{
 	if (!$? == 0){
 		warn("wpa_cli failed with '".$status."'"."for '".$command."'");
 		return undef;
-	};
+	}
 
 	return $status;
-};
+}
+
+=head2 status_breakdown
+
+This is a internal function.
+
+=cut
 
 #this is a internal function used by this module
 #It breaks down that return from status.
@@ -594,12 +601,12 @@ sub status_breakdown{
 	
 	if (!defined($type)){
 		$type="status"
-	};
+	}
 	
 	if (! $statusA[0] =~ /^Selected interface/){
 		warn("Unexpected return from 'wpa_cli ".$type."': ".$statusA[0]);
 		return undef;
-	};
+	}
 	
 	my @interfaceA=split(/\'/, $statusA[0]);
 	
@@ -612,10 +619,10 @@ sub status_breakdown{
 		$hash{$linesplit[0]}=$linesplit[1];
 		
 		$statusAint++;
-	};
+	}
 	
 	return %hash;
-};
+}
 
 =head1 NOTES
 
@@ -627,7 +634,7 @@ on something that uses it in it's current form.
 
 =head1 AUTHOR
 
-Zane C. Bowers, C<< <vvelox at vvelox.net> >>
+Zane C. Bowers-Hadley, C<< <vvelox at vvelox.net> >>
 
 =head1 BUGS
 
@@ -673,7 +680,7 @@ L<http://search.cpan.org/dist/WPA-CLI>
 
 =head1 COPYRIGHT & LICENSE
 
-Copyright 2008 Zane C. Bowers, all rights reserved.
+Copyright 2011 Zane C. Bowers-Hadley, all rights reserved.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

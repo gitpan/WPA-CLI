@@ -4,7 +4,7 @@ use ExtUtils::MakeMaker;
 
 WriteMakefile(
     NAME                => 'WPA::CLI',
-    AUTHOR              => 'Zane C. Bowers <vvelox@vvelox.net>',
+    AUTHOR              => 'Zane C. Bowers-Hadley <vvelox@vvelox.net>',
     VERSION_FROM        => 'lib/WPA/CLI.pm',
     ABSTRACT_FROM       => 'lib/WPA/CLI.pm',
     PL_FILES            => {},

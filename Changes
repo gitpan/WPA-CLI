@@ -1,4 +1,9 @@
 Revision history for WPA-CLI
 
-0.1.0	2008-04-06/19:00
-		Initial release.
+0.1.1	 2011-07-01/18:10
+		 -Fix POD issues.
+		 -Update name post marriage.
+		 -Minor cleanups.
+
+0.1.0	 2008-04-06/19:00
+		 -Initial release.
